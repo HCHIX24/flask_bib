@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIBLIOTECA CHIX</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/backend/static/css/style.css">
+
+    <!-- AXIOS -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!-- JS script -->
+    <script type="module" src="js/script.js"></script>
+</head>
+
+<body>
+
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container text-center">
+            <h1>BIENVENIDOS A TODO</h1>
+        </div>
+    </header>
+
+    <!-- Carousel Section -->
+    <div id="bookCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="images/sapiens.jpg" class="d-block w-100" alt="Sapiens">
+            </div>
+            <div class="carousel-item">
+                <img src="images/educated.jpg" class="d-block w-100" alt="Educated">
+            </div>
+            <div class="carousel-item">
+                <img src="images/atomic.jpg" class="d-block w-100" alt="Atomic Habits">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <select id="userDropdown">
+        <option value="">--Choose a User--</option>
+    </select>
+    <select id="bookDropdown" disabled>
+        <option value="">--Choose a Book--</option>
+    </select>
+    <!-- Book Cards Section -->
+
+    <div class="container my-4">
+        <h2 class="text-center mb-4">NUESTRA COLECION</h2>
+        <div class="row">
+
+            <!-- Card 1 -->
+            <div class="col-sm-6 col-lg-4">
+                <div class="card">
+                    <img src="images/thebody.jpg" class="card-img-top" alt="The Body Keeps the Score">
+                    <div class="card-body">
+                        <h5 class="card-title">The Body Keeps the Score</h5>
+                        <p class="card-text">Bessel van der Kolk explores how trauma affects the brain and body, shaping
+                            one's emotional and physical well-being. It offers insights into innovative healing
+                            approaches, such as mindfulness, yoga, and neurofeedback, to help individuals recover from
+                            trauma.</p>
+                        <button class="btn btn-primary">Borrow</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 2 -->
+
+            <div class="col-sm-6 col-lg-4">
+                <div class="card">
+                    <img src="images/caste.jpg" class="card-img-top" alt="Caste: The Origins of Our Discontents">
+                    <div class="card-body">
+                        <h5 class="card-title">Caste: The Origins of Our Discontents</h5>
+                        <p class="card-text">Isabel Wilkerson examines the deeply entrenched system of caste in America,
+                            drawing parallels between the racial hierarchy in the U.S., the caste systems of India, and
+                            Nazi Germany. Wilkerson explores how caste shapes individuals' lives and societal
+                            structures, highlighting its impact on inequality, discrimination, and systemic injustice.
+                        </p>
+                        <button class="btn btn-primary">Borrow</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 3 -->
+
+            <div class="col-sm-6 col-lg-4">
+                <div class="card">
+                    <img src="images/thinkagain.jpg" class="card-img-top"
+                        alt="Think Again: The Power of Knowing What You Don't Know">
+                    <div class="card-body">
+                        <h5 class="card-title">Think Again: The Power of Knowing What You Don't Know</h5>
+                        <p class="card-text">Adam Grant encourages readers to embrace intellectual humility and rethink
+                            their assumptions. It highlights the importance of questioning one's beliefs, staying open
+                            to new ideas, and learning from others in order to make better decisions and foster personal
+                            and professional growth.</p>
+                        <button class="btn btn-primary">Borrow</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 4 -->
+
+            <div class="col-sm-6 col-lg-4">
+                <div class="card">
+                    <img src="images/becomingsuper.jpg" class="card-img-top" alt="Becoming Supernatural">
+                    <div class="card-body">
+                        <h5 class="card-title">Becoming Supernatural</h5>
+                        <p class="card-text">Dr. Joe Dispenza explores the intersection of science and spirituality,
+                            revealing how individuals can transcend their physical limitations and create extraordinary
+                            changes in their lives. Through practical techniques, including meditation and mindfulness,
+                            Dispenza shows how to rewire the brain and body to access higher levels of consciousness,
+                            healing, and transformation.</p>
+                        <button class="btn btn-primary">Borrow</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Card 5 -->
+
+    <div class="col-sm-6 col-lg-4">
+        <div class="card">
+            <img src="images/masteryourmimnd.png" class="card-img-top"
+                alt="Can't Hurt Me: Master Your Mind and Defy the Odds">
+            <div class="card-body">
+                <h5 class="card-title">Can't Hurt Me: Master Your Mind and Defy the Odds</h5>
+                <p class="card-text">David Goggins is a memoir and self-help guide that chronicles the author's journey
+                    from a challenging, abusive childhood to becoming a Navy SEAL and ultramarathon runner. Through his
+                    story, Goggins shares powerful lessons on mental toughness, resilience, and overcoming self-imposed
+                    limits to achieve extraordinary success.</p>
+                <button class="btn btn-primary">Borrow</button>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    <!-- Card 6 -->
+
+    <div class="col-sm-6 col-lg-4">
+        <div class="card">
+            <img src="images/subtleart.jpg" class="card-img-top" alt="The Subtle Art of Not Giving a F*ck">
+            <div class="card-body">
+                <h5 class="card-title">The Subtle Art of Not Giving a F*ck</h5>
+                <p class="card-text">Mark Manson challenges conventional self-help advice by emphasizing the importance
+                    of embracing life's difficulties and focusing on what truly matters. Through blunt and humorous
+                    language, Manson encourages readers to let go of societal expectations and prioritize their values
+                    for a more meaningful, fulfilling life.</p>
+                <button class="btn btn-primary">Borrow</button>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    <!-- Card 7 -->
+
+    <div class="col-sm-6 col-lg-4">
+        <div class="card">
+            <img src="images/rulesforlife.png" class="card-img-top" alt="12 Rules for Life: An Antidote to Chaos">
+            <div class="card-body">
+                <h5 class="card-title">12 Rules for Life: An Antidote to Chaos</h5>
+                <p class="card-text">Jordan Peterson offers practical advice grounded in psychology, philosophy, and
+                    personal anecdotes to help individuals navigate the complexities of life. Each of the 12 rules
+                    addresses a fundamental aspect of human existence, emphasizing responsibility, meaning, and order in
+                    the face of chaos and suffering.</p>
+                <button class="btn btn-primary">Borrow</button>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    <!-- Card 8 -->
+
+    <div class="col-sm-6 col-lg-4">
+        <div class="card">
+            <img src="images/greenlights.png" class="card-img-top" alt="Greenlights">
+            <div class="card-body">
+                <h5 class="card-title">Greenlights</h5>
+                <p class="card-text">McConaughey is a memoir that combines personal anecdotes, life lessons, and
+                    unconventional wisdom drawn from the actor's experiences. Through a mix of humor and insight,
+                    McConaughey reflects on his journey, offering readers a guide to navigating life's challenges with
+                    authenticity and resilience.</p>
+                <button class="btn btn-primary">Borrow</button>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    <!-- Card 9 -->
+
+    <div class="col-sm-6 col-lg-4">
+        <div class="card">
+            <img src="images/fivedysfunctions.jpg" class="card-img-top" alt="The Five Dysfunctions of a Team">
+            <div class="card-body">
+                <h5 class="card-title">The Five Dysfunctions of a Team</h5>
+                <p class="card-text">Patrick Lencioni outlines the common challenges that prevent teams from working
+                    effectively together. It identifies five key dysfunctions—absence of trust, fear of conflict, lack
+                    of commitment, avoidance of accountability, and inattention to results—and offers actionable
+                    strategies for overcoming these obstacles to build cohesive and high-performing teams.</p>
+                <button class="btn btn-primary">Borrow</button>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    <!-- Card 10 -->
+
+    <div class="col-sm-6 col-lg-4">
+        <div class="card">
+            <img src="images/daretolead.jpg" class="card-img-top" alt="Dare to Lead">
+            <div class="card-body">
+                <h5 class="card-title">Dare to Lead</h5>
+                <p class="card-text">Brené Brown focuses on the power of vulnerability and courage in leadership. Brown
+                    emphasizes the importance of building trust, embracing vulnerability, and creating a culture of
+                    empathy to foster strong, effective teams.</p>
+                <button class="btn btn-primary">Borrow</button>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+
+    <!-- Footer Section -->
+    <footer class="footer text-center">
+        <p>&copy; 2024 Biblioteca CHIX</p>
+    </footer>
+
+    <!-- Bootstrap JS & Popper.js(its purpose is to calculate the position of an element to make it possible to position it) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

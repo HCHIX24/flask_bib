@@ -1,0 +1,195 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header Styling */
+.header {
+    background-color: #f130d4;
+    color: white;
+    padding: 40px 0;
+}
+
+h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+
+/* Footer Styling */
+.footer {
+    background-color: #f17c3d;
+    color: white;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Carousel Styling */
+.carousel-inner img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+}
+
+/* Card Styling */
+.card {
+    border: 2px solid #eeff07;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(14, 25, 234, 0.1);
+    object-fit: cover;
+    height: 100%;
+    /* Ensure the cards take up the full height of their container */
+}
+
+.card-body {
+    text-align: center;
+    padding: 15px;
+}
+
+.card-title {
+    font-size: 1.25em;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    font-size: 1em;
+    margin-bottom: 20px;
+}
+
+/* Button Styling */
+.btn-primary {
+    background-color: #10ee18;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    color: black;
+}
+
+.btn-primary:hover {
+    background-color: #31f4fe;
+}
+
+/* Responsive grid: 2 cards per row on small screens, 3 on large */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    /* Adds spacing between cards */
+}
+
+.col-sm-6,
+.col-lg-4 {
+    flex: 0 0 48%;
+    /* 2 cards per row for small screens */
+    max-width: 48%;
+}
+
+@media (min-width: 768px) {
+    .col-lg-4 {
+        flex: 0 0 31%;
+        /* 3 cards per row for large screens */
+        max-width: 31%;
+    }
+}
+
+/* Ensuring the cards inside the row behave responsively */
+.card-img-top {
+    width: 100%;
+    height: 200px;
+    /* Adjust height for images */
+    object-fit: cover;
+}
+
+/* Footer Styling */
+.footer {
+    background-color: #eb14cb;
+    color: rgb(10, 4, 66);
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Styling for availability */
+.available {
+    font-weight: bold;
+    /* Bold for available books */
+}
+
+.unavailable {
+    font-weight: normal;
+    /* Regular for unavailable books */
+    color: gray;
+}
+
+/* General dropdown container */
+.dropdown-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 250px;
+    margin: 20px auto;
+}
+
+/* Custom dropdown styling */
+.custom-dropdown {
+    appearance: none;
+    /* Remove default browser styles */
+    background-color: #f9f9f9;
+    /* Light background */
+    border: 2px solid #d3d3d3;
+    /* Soft border */
+    border-radius: 8px;
+    /* Rounded corners */
+    padding: 10px;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    /* Text color */
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Dropdown hover effect */
+.custom-dropdown:hover {
+    border-color: #7fbf7f;
+    /* Light green border on hover */
+}
+
+/* Dropdown when focused */
+.custom-dropdown:focus {
+    border-color: #4CAF50;
+    /* Stronger green focus color */
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+/* Disabled dropdown */
+.custom-dropdown:disabled {
+    background-color: #eaeaea;
+    color: #a0a0a0;
+    cursor: not-allowed;
+}
+
+/* Add an arrow icon for a modern look */
+.custom-dropdown {
+    background-image: linear-gradient(45deg, transparent 50%, #777 50%),
+        linear-gradient(-45deg, transparent 50%, #777 50%);
+    background-position: calc(100% - 20px) calc(50% - 2px),
+        calc(100% - 15px) calc(50% - 2px);
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+}
+
+/* Optional: Make disabled dropdown's arrow grey */
+.custom-dropdown:disabled {
+    background-image: linear-gradient(45deg, transparent 50%, #ccc 50%),
+        linear-gradient(-45deg, transparent 50%, #ccc 50%);
+}
