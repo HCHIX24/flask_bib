@@ -4,10 +4,8 @@ from datetime import datetime, timedelta
 from enum import Enum
 
 # Flask setup
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///library.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+
+db = SQLAlchemy()
 
 # Enum for loan durations
 class BookType(Enum):
@@ -66,6 +64,8 @@ class Loan(db.Model):
     borrowed_date = db.Column(db.DateTime, default=datetime.utcnow)
     return_date = db.Column(db.DateTime, nullable=False)
     duration = db.Column(db.Enum(BookType), nullable=False)  # Borrow duration
+    returned = db.Column(db.Boolean, default=False) 
+
 
     user = db.relationship('User', back_populates='loans')
     book = db.relationship('Book', back_populates='loans')
@@ -79,6 +79,8 @@ class Loan(db.Model):
         self.duration = duration
         self.borrowed_date = borrowed_date
         self.return_date = self.borrowed_date + timedelta(days=duration.value)  # Calculate return date based on duration
+        self.returned = False  # Set as not returned by default
+
     def to_dict(self):
         return {
         "id": self.id,
@@ -87,9 +89,9 @@ class Loan(db.Model):
         "borrowed_date": self.borrowed_date,
         "return_date": self.return_date,
         "duration": self.duration.name,  # You can use `.name` to get the enum name
+        "returned": self.returned  
+
     }
     def __repr__(self):
         return f"<Loan {self.user.username} borrowed {self.book.title}>"
-# Initialize the database
-with app.app_context():
-    db.create_all()
+

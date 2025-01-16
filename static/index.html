@@ -49,12 +49,27 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
-    <select id="userDropdown">
-        <option value="">--Choose a User--</option>
-    </select>
-    <select id="bookDropdown" disabled>
-        <option value="">--Choose a Book--</option>
-    </select>
+    <form>
+        <select id="userDropdown">
+            <option value="">--Choose a User--</option>
+        </select>
+        <select id="bookDropdown" disabled>
+            <option value="">--Choose a Book--</option>
+        </select>
+        <!-- Loan Type Dropdown -->
+        <select id="loanTypeDropdown">
+            <option value="">--Choose Loan Type--</option>
+            <option value="1">Short (1-2 days)</option>
+            <option value="2">Medium (3-5 days)</option>
+            <option value="3">Long (6-10 days)</option>
+        </select>
+        <!-- Buttons -->
+        <button id="submitBorrow" type="button" class="btn btn-success mt-3" disabled>Borrow Book</button>
+        <button id="returnBook" type="button" class="btn btn-danger mt-3" disabled>Return Book</button>
+    </form>
+    
+    <!-- Status Message -->
+    <p id="statusMessage" class="text-center mt-3"></p>
     <!-- Book Cards Section -->
 
     <div class="container my-4">

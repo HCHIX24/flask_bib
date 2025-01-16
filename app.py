@@ -2,59 +2,47 @@ from flask import Flask, jsonify, request
 import logging
 from models import Book, BookType, Loan, User, db
 from flask_cors import CORS
-
-
-#basic config for logging
-logging.basicConfig(
-    level=logging.DEBUG, #logging level
-    format='%(asctime)s - %(levelname)s - %(message)s', #log format
-    handlers= [
-        logging.StreamHandler(), #output logs to console
-        logging.FileHandler('app.log') #also save logs to a file
-        ]
-)
-#usage
-logging.debug('debug message')
-logging.info('info message')
-logging.warning('warning message')
-logging.error('error message')
-logging.critical('critical message')
-
+from flask_migrate import Migrate
 # Initialize Flask app and configure it
 app = Flask(__name__)
-CORS(app)  # Allow cross-origin requests
+CORS(app, origins=["http://127.0.0.1:5500"], methods=["GET", "POST", "PUT", "DELETE"])
 
+# Set up logging
+logger = logging.getLogger(__name__)
 
-# Set up configuration for your app (e.g., database URI)
+# Basic config for logging
+logging.basicConfig(
+    level=logging.DEBUG, # Logging level
+    format='%(asctime)s - %(levelname)s - %(message)s', # Log format
+    handlers= [
+        logging.StreamHandler(), # Output logs to console
+        logging.FileHandler('app.log') # Also save logs to a file
+    ]
+)
+
+# Configure the database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///library.db' 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable modification tracking for performance
 
 db.init_app(app)  # Properly initialize SQLAlchemy with the app
-
-# Set up logging
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
-
-# -----------------------------test route--------------------------#
-
-# Example route to test the setup
+migrate = Migrate(app, db)
+# -----------------------------TEST ROUTE--------------------------#
 @app.route('/test')
 def index():
     return "TESTING!"
 
 
-# -----------------------------BOOK--------------------------#
+# -----------------------------BOOK ROUTES--------------------------#
 
-# add book
+# Add a new book
 @app.route('/books', methods=['POST'])
 def add_book():
-    #  """
-    # Adds a new book to the database.
-    # Expects 'title' and 'author' in JSON request body.
-    # """
-
+    """
+    Adds a new book to the database.
+    Expects 'title' and 'author' in JSON request body.
+    """
     data = request.get_json()
-# Input validation
+    # Input validation
     title = data.get('title')
     author = data.get('author')
 
@@ -73,78 +61,59 @@ def add_book():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
-# Get all books route
+
+# Get all books
 @app.route('/books', methods=['GET'])
 def get_books():
     """
-    Get a list of all books in the database.
+    Retrieve all books from the database.
     """
     books = Book.query.all()
-    logging.debug(f"Fetched books: {[book.to_dict() for book in books]}")
-    # If no books found
+    logging.info("fetched books")
     if not books:
         return jsonify({"message": "No books found"}), 404
+    return jsonify({"books": [book.to_dict() for book in books]}), 200
 
-    # Convert books to a list of dictionaries using the to_dict method
-    books_list = [book.to_dict() for book in books]
-
-    return jsonify({
-        "books": books_list
-    }), 200    
-# Update book route
+# Update book details
 @app.route('/books/<int:book_id>', methods=['PUT'])
 def update_book(book_id):
-    # """
-    # Update an existing book's details using its ID.
-    # """
+    """
+    Update an existing book's details using its ID.
+    """
     book = Book.query.get(book_id)
     if not book:
         return jsonify({"message": "Book not found"}), 404
 
     # Parse data from request
     data = request.get_json()
-    title = data.get('title', book.title)  # Default to current title if not provided
-    author = data.get('author', book.author)  # Default to current author if not provided
-    available = data.get('available', book.available)  # Default to current availability
+    book.title = data.get('title', book.title)
+    book.author = data.get('author', book.author)
+    book.available = data.get('available', book.available)
 
-    # Update book details
-    book.title = title
-    book.author = author
-    book.available = available
-
-    # Commit changes
     db.session.commit()
-
     return jsonify({
         "message": "Book updated successfully",
-        "book": {
-            "id": book.id,
-            "title": book.title,
-            "author": book.author,
-            "available": book.available
-        }
+        "book": book.to_dict()
     }), 200
 
-
-# Delete book route
+# Delete a book
 @app.route('/books/<int:book_id>', methods=['DELETE'])
 def delete_book(book_id):
     """
-    Delete a book from the database using its ID.
+    Delete a book from the database.
     """
     book = Book.query.get(book_id)
     if not book:
         return jsonify({"message": "Book not found"}), 404
 
-    # Delete book
     db.session.delete(book)
     db.session.commit()
-
     return jsonify({"message": f"Book '{book.title}' has been deleted"}), 200
 
-# -----------------------------USERS--------------------------#
 
-# CRUD Routes for Users
+# -----------------------------USER ROUTES--------------------------#
+
+# Add a new user
 @app.route('/users', methods=['POST'])
 def add_user():
     data = request.get_json()
@@ -160,78 +129,89 @@ def add_user():
 
     return jsonify(new_user.to_dict()), 201
 
+# Get all users
 @app.route('/users', methods=['GET'])
 def get_users():
     users = User.query.all()
-    logging.debug(f"Fetched users: {[user.to_dict() for user in users]}")
+    logging.info("fetched users")
+
     return jsonify([user.to_dict() for user in users]), 200
 
-@app.route('/users/<int:user_id>', methods=['GET'])
-def get_user(user_id):
-    user = User.query.get(user_id)
-    if not user:
-        return jsonify({"error": "User not found"}), 404
-    return jsonify(user.to_dict()), 200
-
-@app.route('/users/<int:user_id>', methods=['PUT'])
-def update_user(user_id):
-    user = User.query.get(user_id)
-    if not user:
-        return jsonify({"error": "User not found"}), 404
-
-    data = request.get_json()
-    user.username = data.get('username', user.username)
-    user.email = data.get('email', user.email)
-    user.active = data.get('active', user.active)
-
-    db.session.commit()
-    return jsonify(user.to_dict()), 200
-
-@app.route('/users/<int:user_id>', methods=['DELETE'])
-def delete_user(user_id):
-    user = User.query.get(user_id)
-    if not user:
-        return jsonify({"error": "User not found"}), 404
-
-    db.session.delete(user)
-    db.session.commit()
-    return jsonify({"message": "User deleted successfully"}), 200
-
-# -----------------------------BORROW--------------------------#
+# -----------------------------BORROW BOOK ROUTES--------------------------#
 
 @app.route('/borrow', methods=['POST'])
 def borrow_book():
-    with app.app_context():
-        data = request.get_json()
-        user_id = data.get('user_id')
-        book_id = data.get('book_id')
-        loan_type = data.get('loan_type')
+    """
+    Borrow a book by providing user_id, book_id, and loan_type.
+    """
+    data = request.get_json()
+    user_id = data.get('user_id')
+    book_id = data.get('book_id')
+    loan_type = data.get('loan_type')
 
-        # Validate inputs
-        user = User.query.get(user_id)
-        book = Book.query.get(book_id)
-        
-        if not user or not book:
-            return jsonify({"error": "User or book not found"}), 404
+    if not user_id or not book_id or loan_type is None:
+        return jsonify({"error": "User ID, Book ID, and loan type are required"}), 400
 
-        # Check book availability
-        if not book.available:
-            return jsonify({"error": "Book is not available"}), 400
+    user = db.session.get(User, user_id)
+    book = db.session.get(Book, book_id)
 
-        # Create loan and update book status
-        loan = Loan(user=user, book=book, duration=BookType(int(loan_type)))
-        book.available = False  # Mark book as unavailable
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    if not book:
+        return jsonify({"error": "Book not found"}), 404
+    if not book.available:
+        return jsonify({"error": "Book is not available"}), 400
+
+    try:
+        loan_duration = BookType(int(loan_type))
+    except ValueError:
+        return jsonify({"error": "Invalid loan type"}), 400
+
+    try:
+        loan = Loan(user=user, book=book, duration=loan_duration)
+        book.available = False
 
         db.session.add(loan)
         db.session.commit()
 
         return jsonify({
             "message": f"Book '{book.title}' borrowed by {user.username}",
-            "return_date": loan.return_date.strftime("%Y-%m-%d")
+            "return_date": loan.return_date.strftime("%Y-%m-%d"),
+            "book_title": book.title,
+            "user_name": user.username
         }), 201
 
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+    
+# -----------------------------RETURN BOOK ROUTES--------------------------#
+
+@app.route('/return', methods=['POST', 'DELETE'])
+def return_book():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    book_id = data.get('book_id')
+
+    if not user_id or not book_id:
+        return jsonify({'error': 'User ID and Book ID are required.'}), 400
+
+    loan = Loan.query.filter_by(user_id=user_id, book_id=book_id, returned=False).first()
+
+    if not loan:
+        return jsonify({'error': 'No active loan found for this user and book.'}), 404
+
+    # Mark the book as returned
+    loan.returned = True
+    book = Book.query.get(book_id)
+    if book:
+        book.available = True
+
+    db.session.commit()
+
+    return jsonify({'message': 'Book returned successfully!'}), 200
 
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()  # Ensure tables are created
-    app.run(debug=True)
+        db.create_all()
+    app.run(debug=False)
